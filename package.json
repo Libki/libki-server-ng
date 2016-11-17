@@ -1,0 +1,30 @@
+{
+  "name": "libki-server-ng",
+  "version": "3.0.0",
+  "description": "Libki Server NG",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Libki/libki-server-ng.git"
+  },
+  "keywords": [
+    "libki",
+    "kiosk",
+    "management",
+    "pc",
+    "reservation"
+  ],
+  "author": "Kyle M Hall <kyle@kylehall.info>",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Libki/libki-server-ng/issues"
+  },
+  "homepage": "https://libki.org",
+  "dependencies": {
+    "express": "~4.0.0",
+    "body-parser": "~1.0.1"
+  }
+}
