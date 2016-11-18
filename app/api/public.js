@@ -3,7 +3,7 @@
 let Client = require('../models/client');
 
 module.exports = {
-    clients: function(request, response) {
+    clients: (request, response) => {
         new Client().fetchAll()
             .then(clients => {
                 response.json({
@@ -14,6 +14,4 @@ module.exports = {
                 response.send('An error occured');
             });
     },
-
-
 }
