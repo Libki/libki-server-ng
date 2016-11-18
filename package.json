@@ -30,6 +30,7 @@
     "knex": "^0.12.6"
   },
   "devDependencies": {
-    "jshint": "^2.9.4"
+    "jshint": "^2.9.4",
+    "nodemon": "^1.11.0"
   }
 }

@@ -1,23 +1,48 @@
-var express = require('express'); // call express
-var app = express(); // define our app using express
-var bodyParser = require('body-parser'); // will let us pull POST content from our HTTP request
-var knex = require('./knex');
+'use strict';
 
-// configure app to use bodyParser()
-// this will let us get the data from a POST
+let express = require('express'); // call express
+let bodyParser = require('body-parser'); // will let us pull POST content from our HTTP request
+
+let Client = require('./app/models/client');
+
+let app = express(); // define our app using express
+
+// For parsing application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+// For parsing application/json
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080; // set our port
+let port = process.env.PORT || 8080; // set our port
 
-var router = express.Router(); // get an instance of the express Router
+let router = express.Router(); // get an instance of the express Router
 
-router.get('/', function(req, res) {
-    res.json({
-        message: 'hooray! welcome to our api!'
-    });
+router.get('/public/clients', function(request, response) {
+    new Client().fetchAll()
+        .then(clients => {
+            response.json({
+                clients: clients
+            });
+        }).catch(error => {
+            console.log(error);
+            response.send('An error occured');
+        });
+});
+
+router.post('/client/register', function(request, response) {
+    //FIXME: Need to do some error checking here
+    new Client(request.body)
+        .save()
+        .then(client => {
+            response.json(
+                client.toJSON()
+            )
+        })
+        .catch(error => {
+            console.log(error);
+            response.send('An error occured');
+        });
 });
 
 // all of our routes will be prefixed with /api
