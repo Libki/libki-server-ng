@@ -22,9 +22,10 @@ let router = express.Router(); // get an instance of the express Router
 // Set up our routes
 router.get('/public/clients', publicAPI.clients);
 
-router.post('/client/register', clientAPI.register);
-
 router.get('/client/settings', clientAPI.settings);
+router.post('/client/register', clientAPI.register);
+router.post('/client/acknowledge_reservation', clientAPI.acknowledge_reservation);
+
 
 // all of our routes will be prefixed with /api
 app.use('/api', router);
