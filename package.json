@@ -24,7 +24,12 @@
   },
   "homepage": "https://libki.org",
   "dependencies": {
+    "body-parser": "~1.0.1",
+    "bookshelf": "^0.10.2",
     "express": "~4.0.0",
-    "body-parser": "~1.0.1"
+    "knex": "^0.12.6"
+  },
+  "devDependencies": {
+    "jshint": "^2.9.4"
   }
 }
