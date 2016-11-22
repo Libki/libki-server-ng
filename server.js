@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 // For parsing application/json
 app.use(bodyParser.json());
 
-let port = process.env.PORT || 8080; // set our port
+let port = process.env.PORT || 9090; // set our port
 
 let router = express.Router(); // get an instance of the express Router
 
@@ -31,6 +31,9 @@ router.post('/client/acknowledge_reservation', clientAPI.acknowledge_reservation
 
 // all of our routes will be prefixed with /api
 app.use('/api', router);
-app.listen(port);
 
-console.log(`Libki server is listening on port ${port}`);
+let server = app.listen(port, () => {
+    console.log(`Libki server is listening on port ${server.address().port}`);
+});
+
+module.exports = server;

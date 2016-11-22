@@ -3,15 +3,15 @@
 let Client = require('../models/client');
 
 module.exports = {
-    clients: (request, response) => {
+    clients: (req, res) => {
         new Client().fetchAll()
             .then(clients => {
-                response.json({
-                    clients: clients
-                });
+                res.json({
+                        clients: clients
+                    });
             }).catch(error => {
                 console.log(error);
-                response.send('An error occured');
+                res.send('An error occured');
             });
     },
 }
