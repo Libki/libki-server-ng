@@ -10,6 +10,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteA',
                 name: 'TestClient1',
                 location: 'TestLocationX',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -18,6 +19,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteA',
                 name: 'TestClient2',
                 location: 'TestLocationX',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -26,6 +28,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteA',
                 name: 'TestClient3',
                 location: 'TestLocationY',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -34,6 +37,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteA',
                 name: 'TestClient4',
                 location: 'TestLocationY',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -42,6 +46,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteB',
                 name: 'TestClient5',
                 location: 'TestLocationX',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -50,6 +55,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteB',
                 name: 'TestClient6',
                 location: 'TestLocationX',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -58,6 +64,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteB',
                 name: 'TestClient7',
                 location: 'TestLocationY',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
         knex('clients').insert(
@@ -66,6 +73,7 @@ exports.seed = function(knex, Promise) {
                 site: 'TestSiteB',
                 name: 'TestClient8',
                 location: 'TestLocationY',
+                last_registered: '9999-01-01 00:00:00',
             }
         ),
       ]);

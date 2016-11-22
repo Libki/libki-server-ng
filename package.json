@@ -4,7 +4,7 @@
   "description": "Libki Server NG",
   "main": "index.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha -u exports test/**/*"
+    "test": "node_modules/.bin/mocha -u exports test/ --recursive"
   },
   "repository": {
     "type": "git",

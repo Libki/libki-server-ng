@@ -25,7 +25,8 @@ exports.up = function(knex, Promise) {
             table.string('location').nullable();
             table.timestamp('last_registered').notNull().defaultTo(knex.fn.now());
 
-            table.timestamps();
+            table.timestamp('created_at').notNull().defaultTo(knex.fn.now());
+            table.timestamp('updated_at').notNull().defaultTo(knex.fn.now());
 
             table.unique(['site', 'name']);
         }),
