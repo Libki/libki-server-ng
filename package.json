@@ -2,7 +2,8 @@
   "name": "libki-server-ng",
   "version": "3.0.0",
   "description": "Libki Server NG",
-  "main": "index.js",
+  "private": true,
+  "main": "server.js",
   "scripts": {
     "test": "node_modules/.bin/mocha -u exports test/ --recursive"
   },
@@ -34,8 +35,8 @@
     "jshint": "^2.9.4",
     "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
-    "really-need": "^1.9.2",
     "should": "^11.1.1",
+    "sqlite": "^2.2.3",
     "supertest": "^2.0.1"
   }
 }

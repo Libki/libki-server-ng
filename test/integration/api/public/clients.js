@@ -10,20 +10,22 @@ let server = require('../../../../server');
 
 describe('loading express', function() {
 
-    beforeEach('Setting up test database', function(done) {
-        knex.migrate.latest()
-            .then(function() {
-                return knex.seed.run();
-            })
-            .then(function() {
-                done();
-            });
+    before('setting up test database schema', done => {
+        knex.migrate.latest().then( () => {
+            done();
+        });
+    });
+
+    beforeEach('setting up test database data', function(done) {
+        knex.seed.run().then( () => {
+            done();     
+        });
     });
 
     describe('GET /api/public/clients', function() {
         it('respond with json', function(done) {
             request(server)
-                .get('/api//public/clients')
+                .get('/api/public/clients')
                 .set('Accept', 'application/json')
                 .expect('Content-Type', 'application/json')
                 .expect(function(res) {
@@ -37,10 +39,6 @@ describe('loading express', function() {
                         client.should.have.property('location').which.is.a.String();
 
                         let date;
-
-                        client.should.have.property('last_registered').which.is.a.String();
-                        date = new Date(client.last_registered);
-                        (date).should.eql(new Date('9999-01-01 00:00:00'));
 
                         client.should.have.property('created_at').which.is.a.String();
                         date = new Date(client.created_at);
