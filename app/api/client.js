@@ -20,15 +20,26 @@ module.exports = {
             });
     },
 
+    //FIXME: Will need to whitelist public settings
     settings: (req, res) => {
-        new Setting().fetchAll()
+        let site = req.body.site;
+
+        // 'site' is required
+        if ( typeof site === 'undefined' ) {
+            res.status(400).send("No param 'site' passed in!");
+            return;
+        }
+
+        new Setting()
+            .query('where', 'site', '=', site )
+            .fetchAll()
             .then(settings => {
                 res.json({
                     settings: settings
                 });
             }).catch(error => {
                 console.log(error);
-                res.send('An error occured');
+                res.status(400).send('An error occured');
             });
     },
 
