@@ -79,6 +79,8 @@ describe('loading express', function() {
                     .expect(function(res) {
                         let settings = res.body;
 
+                        should( Object.keys(settings).length ).be.exactly(8);
+
                         settings.should.have.property('ClientBehavior').which.is.a.String();
                         settings.should.have.property('ReservationShowUsername').which.is.a.String();
                         settings.should.have.property('BannerTopURL').which.is.a.String();
