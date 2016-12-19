@@ -31,26 +31,38 @@ describe('loading express', function() {
     describe('GET /api/client/settings', function() {
         let settings = Settings.forge([{
             site: "TestSiteA",
-            name: "Setting1",
-            value: "Value1",
+            name: "ClientBehavior",
+            value: "Value",
             created_at: '9999-01-01 00:00:00',
             updated_at: '9999-01-01 00:00:00',
         }, {
             site: "TestSiteA",
-            name: "Setting2",
-            value: "Value2",
+            name: "ReservationShowUsername",
+            value: "Value",
+            created_at: '9999-01-01 00:00:00',
+            updated_at: '9999-01-01 00:00:00',
+        }, {
+            site: "TestSiteA",
+            name: "NonWhiteListedSetting",
+            value: "Value",
             created_at: '9999-01-01 00:00:00',
             updated_at: '9999-01-01 00:00:00',
         }, {
             site: "TestSiteB",
-            name: "Setting1",
-            value: "Value1",
+            name: "ClientBehavior",
+            value: "Value",
             created_at: '9999-01-01 00:00:00',
             updated_at: '9999-01-01 00:00:00',
         }, {
             site: "TestSiteB",
-            name: "Setting2",
-            value: "Value2",
+            name: "ReservationShowUsername",
+            value: "Value",
+            created_at: '9999-01-01 00:00:00',
+            updated_at: '9999-01-01 00:00:00',
+        }, {
+            site: "TestSiteB",
+            name: "NonWhiteListedSetting",
+            value: "Value",
             created_at: '9999-01-01 00:00:00',
             updated_at: '9999-01-01 00:00:00',
         }, ]);
@@ -65,40 +77,18 @@ describe('loading express', function() {
                     .set('Accept', 'application/json')
                     .expect('Content-Type', 'application/json')
                     .expect(function(res) {
-                        let settings = res.body.settings;
+                        let settings = res.body;
 
-                        // We should only get the TestSiteA params
-                        should(settings.length).be.exactly(2);
+                        settings.should.have.property('ClientBehavior').which.is.a.String();
+                        settings.should.have.property('ReservationShowUsername').which.is.a.String();
+                        settings.should.have.property('BannerTopURL').which.is.a.String();
+                        settings.should.have.property('BannerTopWidth').which.is.a.String();
+                        settings.should.have.property('BannerTopHeight').which.is.a.String();
+                        settings.should.have.property('BannerBottomURL').which.is.a.String();
+                        settings.should.have.property('BannerBottomWidth').which.is.a.String();
+                        settings.should.have.property('BannerBottomHeight').which.is.a.String();
 
-                        // Check first setting
-                        let setting = settings[0];
-                        setting.should.have.property('site').which.is.a.String();
-                        setting.should.have.property('name').which.is.a.String();
-                        setting.should.have.property('value').which.is.a.String();
-
-                        let date;
-
-                        setting.should.have.property('created_at').which.is.a.String();
-                        date = new Date(setting.created_at);
-                        (date).should.eql(new Date(date.valueOf()));
-
-                        setting.should.have.property('updated_at').which.is.a.String();
-                        date = new Date(setting.updated_at);
-                        (date).should.eql(new Date(date.valueOf()));
-
-                        // Check second setting
-                        setting = settings[1];
-                        setting.should.have.property('site').which.is.a.String();
-                        setting.should.have.property('name').which.is.a.String();
-                        setting.should.have.property('value').which.is.a.String();
-
-                        setting.should.have.property('created_at').which.is.a.String();
-                        date = new Date(setting.created_at);
-                        (date).should.eql(new Date(date.valueOf()));
-
-                        setting.should.have.property('updated_at').which.is.a.String();
-                        date = new Date(setting.updated_at);
-                        (date).should.eql(new Date(date.valueOf()));
+                        settings.should.not.have.property('NonWhiteListedSetting');
                     })
                     .expect(200, done);
             });

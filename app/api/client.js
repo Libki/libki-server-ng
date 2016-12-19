@@ -4,6 +4,17 @@ let Client = require('../models/client');
 let Setting = require('../models/setting');
 let Reservation = require('../models/reservation');
 
+let CLIENT_SETTINGS = [
+    "ClientBehavior",
+    "ReservationShowUsername",
+    "BannerTopURL",
+    "BannerTopWidth",
+    "BannerTopHeight",
+    "BannerBottomURL",
+    "BannerBottomWidth",
+    "BannerBottomHeight",
+];
+
 module.exports = {
     register: (req, res) => {
         //FIXME: Need to do some error checking here
@@ -25,18 +36,31 @@ module.exports = {
         let site = req.body.site;
 
         // 'site' is required
-        if ( typeof site === 'undefined' ) {
+        if (typeof site === 'undefined') {
             res.status(400).send("No param 'site' passed in!");
             return;
         }
 
         new Setting()
-            .query('where', 'site', '=', site )
+            .query('where', 'site', '=', site)
+            .query('where', 'name', 'in', CLIENT_SETTINGS)
             .fetchAll()
             .then(settings => {
-                res.json({
-                    settings: settings
+                // First convert to a list of name/value pairs
+                let settings_by_name = {};
+                settings.forEach(s => {
+                    settings_by_name[s.attributes.name] = s.attributes.value;
                 });
+
+                // This ensures all the settings are sent, even if they don't exist
+                // in the database. Settings that don't exist have an empty ("") value.
+                CLIENT_SETTINGS.forEach(s => {
+                    if (!settings_by_name[s]) {
+                        settings_by_name[s] = "";
+                    }
+                });
+
+                res.json(settings_by_name);
             }).catch(error => {
                 console.log(error);
                 res.status(400).send('An error occured');
