@@ -1,9 +1,9 @@
 'use strict';
 
-let Bookshelf = require('./database');
+let Bookshelf = require('../bookshelf');
 
-var User = Bookshelf.Model.extend({
+let User = Bookshelf.Model.extend({
   tableName: 'users',
 });
 
-module.exports = Bookshelf.model('User', User);
+module.exports = User;

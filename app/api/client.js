@@ -5,6 +5,8 @@ let CryptoJS = require("crypto-js");
 let Client = require('../models/client');
 let Setting = require('../models/setting');
 let Reservation = require('../models/reservation');
+let Session = require('../models/session');
+let User = require('../models/user');
 
 let CLIENT_SETTINGS = [
     "ClientBehavior",
@@ -92,6 +94,43 @@ module.exports = {
 
     login: (req, res) => {
         //TODO: on login, verify username and password, create statistic line
+        let data = req.body;
+
+        let site = data.site;
+        let username = data.username;
+        let password = data.password;
+        let client_name = data.client_name;
+
+        if (!site) {
+            res.status(400).send('Parameter "site" not sent!');
+            return;
+        }
+
+        if (!username) {
+            res.status(400).send('Parameter "username" not sent!');
+            return;
+        }
+
+        if (!password) {
+            res.status(400).send('Parameter "password" not sent!');
+            return;
+        }
+
+        if (!client_name) {
+            res.status(400).send('Parameter "client_name" not sent!');
+            return;
+        }
+
+        User.where('username', username).fetch({
+            require: true,
+            withRelated: 'sessions'
+        }).then(user => {
+            console.log("USER: ");
+            console.log(user);
+        }).catch( error => {
+            res.status(400).send('Parameter "username" invalid!');
+            return;
+        });
     },
 
     logout: (req, res) => {
