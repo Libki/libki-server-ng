@@ -17,9 +17,19 @@ let CLIENT_SETTINGS = [
 
 module.exports = {
     register: (req, res) => {
-        //FIXME: Need to do some error checking here
 
         let client = req.body;
+
+        if (!client.site) {
+            res.status(400).send('Parameter "site" not sent!');
+            return;
+        }
+
+        if (!client.name) {
+            res.status(400).send('Parameter "name" not sent!');
+            return;
+        }
+
         new Client(client)
             .save()
             .then(client => {
@@ -31,7 +41,6 @@ module.exports = {
             });
     },
 
-    //FIXME: Will need to whitelist public settings
     settings: (req, res) => {
         let site = req.body.site;
 
