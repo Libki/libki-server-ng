@@ -1,5 +1,7 @@
 'use strict';
 
+let CryptoJS = require("crypto-js");
+
 let Client = require('../models/client');
 let Setting = require('../models/setting');
 let Reservation = require('../models/reservation');

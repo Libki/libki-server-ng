@@ -27,6 +27,7 @@
   "dependencies": {
     "body-parser": "~1.0.1",
     "bookshelf": "^0.10.2",
+    "crypto-js": "^3.1.9-1",
     "express": "~4.0.0",
     "knex": "^0.12.6"
   },
