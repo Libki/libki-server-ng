@@ -1,10 +1,15 @@
 exports.seed = function(knex, Promise) {
     // Deletes ALL existing entries
-    return knex('clients').del()
-        .then(setupUsers(knex));
+    return setupClients(knex)
+            .then( setupUsers(knex) );
 };
 
-function setupUsers(knex) {
+function setupClients(knex) {
+    return knex('clients').del()
+        .then(createClients(knex));
+}
+
+function createClients(knex) {
     return Promise.all([
         // Inserts seed entries
         knex('clients').insert({
@@ -68,6 +73,32 @@ function setupUsers(knex) {
             site: 'TestSiteB',
             name: 'TestClient8',
             location: 'TestLocationY',
+            created_at: '9999-01-01 00:00:00',
+            updated_at: '9999-01-01 00:00:00',
+        }),
+    ]);
+}
+
+function setupUsers(knex) {
+    return knex('users').del()
+        .then(createUsers(knex));
+}
+
+function createUsers(knex) {
+    return Promise.all([
+        // Inserts seed entries
+        knex('users').insert({
+            id: 1,
+            site: 'TestSiteA',
+            username: 'TestUser1',
+            password: 'i5f4dcc3b5aa765d61d8327deb882cf99', // Literally 'password' hashed to md5 base 64
+            minutes_allotment: 999,
+            minutes: 60,
+            status: "Logged out",
+            notes: "Test note",
+            is_troublemaker: false,
+            is_guest: false,
+            birthdate: "1981-06-10",
             created_at: '9999-01-01 00:00:00',
             updated_at: '9999-01-01 00:00:00',
         }),
