@@ -23,6 +23,29 @@ describe('loading express', function() {
     });
 
     describe('POST /api/client/login', function() {
+        it('respond with 200 / json if login is allowed', function(done) {
+            request(server)
+                .post('/api/client/login')
+                .send({
+                    'site': 'TestSiteA',
+                    'username': 'TestUser1',
+                    'password': 'password',
+                    'client_name': 'TestClient1',
+                })
+                .expect(200, done);
+        });
+
+        it('respond with 401 if invalid password is passed', function(done) {
+            request(server)
+                .post('/api/client/login')
+                .send({
+                    'site': 'TestSiteA',
+                    'username': 'TestUser1',
+                    'password': 'invalid',
+                    'client_name': 'TestClient1',
+                })
+                .expect(401, 'Parameter "password" invalid!', done);
+        });
 
         it('respond with 400 if invalid username is passed', function(done) {
             request(server)
@@ -33,7 +56,7 @@ describe('loading express', function() {
                     'password': 'invalid',
                     'client_name': 'invalid',
                 })
-                .expect(400, 'Parameter "username" invalid!', done);
+                .expect(401, 'Parameter "username" invalid!', done);
         });
 
         it('respond with 400 if no site is passed', function(done) {

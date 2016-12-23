@@ -103,34 +103,50 @@ module.exports = {
 
         if (!site) {
             res.status(400).send('Parameter "site" not sent!');
-            return;
         }
 
         if (!username) {
             res.status(400).send('Parameter "username" not sent!');
-            return;
         }
 
         if (!password) {
             res.status(400).send('Parameter "password" not sent!');
-            return;
         }
 
         if (!client_name) {
             res.status(400).send('Parameter "client_name" not sent!');
-            return;
         }
 
-        User.where('username', username).fetch({
-            require: true,
-            withRelated: 'sessions'
-        }).then(user => {
-            console.log("USER: ");
-            console.log(user);
-        }).catch( error => {
-            res.status(400).send('Parameter "username" invalid!');
-            return;
-        });
+        User.where('username', username)
+            .where('site', site)
+            .fetch({
+                require: true
+            })
+            .then(user => {
+                let md5 = CryptoJS.MD5(password).toString();
+
+                if (md5 != user.attributes.password) {
+                    res.status(401).send('Parameter "password" invalid!');
+                }
+
+                Session.where('username', username)
+                    .where('site', site)
+                    .fetch()
+                    .then(session => { // Session already exists, this is a bad thing
+                        console.log("SESSION");
+                        console.log(session);
+
+                        if ( session ) {
+                            res.status(409).send('User already has active session!');
+                        }
+
+                        res.json(user); //FIXME: We need to strip out senstive data
+                    });
+
+            })
+            .catch(error => {
+                res.status(401).send('Parameter "username" invalid!');
+            });
     },
 
     logout: (req, res) => {

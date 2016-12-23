@@ -91,7 +91,7 @@ function createUsers(knex) {
             id: 1,
             site: 'TestSiteA',
             username: 'TestUser1',
-            password: 'i5f4dcc3b5aa765d61d8327deb882cf99', // Literally 'password' hashed to md5 base 64
+            password: '5f4dcc3b5aa765d61d8327deb882cf99', // Literally 'password' hashed to md5 base 64
             minutes_allotment: 999,
             minutes: 60,
             status: "Logged out",
