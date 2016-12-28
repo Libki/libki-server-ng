@@ -63,6 +63,7 @@ exports.up = function(knex, Promise) {
             table.string('username').notNull();
             table.string('client_name').notNull();
             table.string('client_location').nullable();
+            table.string('action').notNull();
 
             table.timestamps();
         }),

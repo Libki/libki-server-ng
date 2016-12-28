@@ -7,6 +7,7 @@ let Setting = require('../models/setting');
 let Reservation = require('../models/reservation');
 let Session = require('../models/session');
 let User = require('../models/user');
+let Statistic = require('../models/statistic');
 
 let CLIENT_SETTINGS = [
     "ClientBehavior",
@@ -175,12 +176,34 @@ module.exports = {
         }
 
         // User doesn't have a session, create it!
-        let attributes = {
-            client_id: client.attributes.id,
-            user_id: user.attributes.id,
-        };
-        session = await Session.forge(attributes).save();
+        try {
+            session = await Session.forge({
+                client_id: client.attributes.id,
+                user_id: user.attributes.id,
+            }).save();
+        } catch (err) {
+            console.log("ERROR: " + err);
+            res.status(500).send(err);
+            return;
+        }
 
+        // Create a statistics line for the login
+        let statistic = null;
+        try {
+            statistic = await Statistic.forge({
+                site: site,
+                username: username,
+                client_name: client_name,
+                client_location: client.attributes.location,
+                action: "LOGIN",
+            }).save();
+        } catch (err) {
+            console.log("ERROR: " + err);
+            res.status(500).send(err);
+            return;
+        }
+
+        // Return some data to the client
         res.json({
             username: user.attributes.username,
             minutes: user.attributes.minutes,
