@@ -8,6 +8,8 @@ let should = require('should');
 let knex = require('../../../../app/knex');
 let server = require('../../../../server');
 
+let Statistic = require('../../../../app/models/statistic');
+
 describe('loading express', function() {
 
     before('setting up test database schema', done => {
@@ -31,6 +33,17 @@ describe('loading express', function() {
                     'username': 'TestUser1',
                     'password': 'password',
                     'client_name': 'TestClient1',
+                })
+                .expect(async res => { // Ensure statistic line was created
+                    let statistic = await Statistic
+                        .where('client_name', 'TestClient1')
+                        .where('client_location', 'TestLocationX')
+                        .where('site', 'TestSiteA')
+                        .where('username', 'TestUser1')
+                        .where('action', 'LOGIN')
+                        .fetch();
+
+                    statistic.should.have.property('id').which.is.a.Number();
                 })
                 .expect(200, done);
         });

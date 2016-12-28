@@ -94,7 +94,7 @@ module.exports = {
         //including messages, minutes, and status
     },
 
-    login: async(req, res) => {
+    login: async (req, res) => {
         //TODO: on login, verify username and password, create statistic line
         let data = req.body;
 
