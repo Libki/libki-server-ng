@@ -51,12 +51,24 @@ describe('loading express', function() {
             request(server)
                 .post('/api/client/login')
                 .send({
-                    'site': 'TestSite',
+                    'site': 'TestSiteA',
                     'username': 'invalid',
-                    'password': 'invalid',
-                    'client_name': 'invalid',
+                    'password': 'password',
+                    'client_name': 'TestClient1',
                 })
                 .expect(401, 'Parameter "username" invalid!', done);
+        });
+
+        it('respond with 400 if invalid client name is passed', function(done) {
+            request(server)
+                .post('/api/client/login')
+                .send({
+                    'site': 'TestSite',
+                    'username': 'TestUser1',
+                    'password': 'password',
+                    'client_name': 'invalid',
+                })
+                .expect(401, 'Parameter "client_name" invalid!', done);
         });
 
         it('respond with 400 if no site is passed', function(done) {

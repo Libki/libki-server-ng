@@ -102,6 +102,7 @@ module.exports = {
         let password = data.password;
         let client_name = data.client_name;
 
+        // Basic parameter checking
         if (!site) {
             res.status(400).send('Parameter "site" not sent!');
             return;
@@ -122,6 +123,21 @@ module.exports = {
             return;
         }
 
+        // Get client
+        let client = null;
+        try {
+            client = await Client
+                .where('name', client_name)
+                .where('site', site)
+                .fetch({
+                    require: true
+                });
+        } catch (err) {
+            res.status(401).send('Parameter "client_name" invalid!');
+            return;
+        }
+
+        // Get user
         let user = null;
         try {
             user = await User.where('username', username)
@@ -134,12 +150,14 @@ module.exports = {
             return;
         }
 
+        // Validate password
         let md5 = CryptoJS.MD5(password).toString();
-        if ( md5 != user.attributes.password) {
+        if (md5 != user.attributes.password) {
             res.status(401).send('Parameter "password" invalid!');
             return;
         }
 
+        // Get existing session
         let session = null;
         try {
             session = await Session.where('username', username)
@@ -151,14 +169,24 @@ module.exports = {
             return;
         }
 
-        if (session) {
+        if (session) { // User already has session, reject login
             res.status(409).send('User already has active session!');
             return;
         }
 
-        res.json(user); //FIXME: We need to strip out senstive data
+        // User doesn't have a session, create it!
+        let attributes = {
+            client_id: client.attributes.id,
+            user_id: user.attributes.id,
+        };
+        session = await Session.forge(attributes).save();
 
-
+        res.json({
+            username: user.attributes.username,
+            minutes: user.attributes.minutes,
+            status: user.attributes.status,
+            notes: user.attributes.notes,
+        });
     },
 
     logout: (req, res) => {
