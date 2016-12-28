@@ -53,7 +53,7 @@ describe('loading express', function() {
                 .expect(200, done);
         });
 
-        it('respond with 400 if not "site" parameter is passed', function(done) {
+        it('respond with 400 if no "site" parameter is passed', function(done) {
             request(server)
                 .post('/api/client/register')
                 .send({
@@ -62,7 +62,7 @@ describe('loading express', function() {
                 .expect(400, done);
         });
 
-        it('respond with 400 if not "name" parameter is passed', function(done) {
+        it('respond with 400 if no "name" parameter is passed', function(done) {
             request(server)
                 .post('/api/client/register')
                 .send({
