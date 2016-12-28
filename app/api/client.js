@@ -77,6 +77,7 @@ module.exports = {
             }).catch(error => {
                 console.log(error);
                 res.status(400).send('An error occured');
+                return;
             });
     },
 
@@ -92,7 +93,7 @@ module.exports = {
         //including messages, minutes, and status
     },
 
-    login: (req, res) => {
+    login: async(req, res) => {
         //TODO: on login, verify username and password, create statistic line
         let data = req.body;
 
@@ -103,50 +104,61 @@ module.exports = {
 
         if (!site) {
             res.status(400).send('Parameter "site" not sent!');
+            return;
         }
 
         if (!username) {
             res.status(400).send('Parameter "username" not sent!');
+            return;
         }
 
         if (!password) {
             res.status(400).send('Parameter "password" not sent!');
+            return;
         }
 
         if (!client_name) {
             res.status(400).send('Parameter "client_name" not sent!');
+            return;
         }
 
-        User.where('username', username)
-            .where('site', site)
-            .fetch({
-                require: true
-            })
-            .then(user => {
-                let md5 = CryptoJS.MD5(password).toString();
+        let user = null;
+        try {
+            user = await User.where('username', username)
+                .where('site', site)
+                .fetch({
+                    require: true
+                });
+        } catch (err) {
+            res.status(401).send('Parameter "username" invalid!');
+            return;
+        }
 
-                if (md5 != user.attributes.password) {
-                    res.status(401).send('Parameter "password" invalid!');
-                }
+        let md5 = CryptoJS.MD5(password).toString();
+        if ( md5 != user.attributes.password) {
+            res.status(401).send('Parameter "password" invalid!');
+            return;
+        }
 
-                Session.where('username', username)
-                    .where('site', site)
-                    .fetch()
-                    .then(session => { // Session already exists, this is a bad thing
-                        console.log("SESSION");
-                        console.log(session);
+        let session = null;
+        try {
+            session = await Session.where('username', username)
+                .where('site', site)
+                .fetch();
+        } catch (err) {
+            console.log("ERROR: " + err);
+            res.status(500).send(err);
+            return;
+        }
 
-                        if ( session ) {
-                            res.status(409).send('User already has active session!');
-                        }
+        if (session) {
+            res.status(409).send('User already has active session!');
+            return;
+        }
 
-                        res.json(user); //FIXME: We need to strip out senstive data
-                    });
+        res.json(user); //FIXME: We need to strip out senstive data
 
-            })
-            .catch(error => {
-                res.status(401).send('Parameter "username" invalid!');
-            });
+
     },
 
     logout: (req, res) => {

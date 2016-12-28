@@ -5,7 +5,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha -u exports test/ --recursive"
+    "test": "node_modules/.bin/mocha --require babel-polyfill --compilers js:babel-register -u exports test/ --recursive"
   },
   "repository": {
     "type": "git",
@@ -33,6 +33,10 @@
   },
   "devDependencies": {
     "assert": "^1.4.1",
+    "babel-cli": "^6.18.0",
+    "babel-polyfill": "^6.20.0",
+    "babel-preset-es2017": "^6.16.0",
+    "babel-register": "^6.18.0",
     "jshint": "^2.9.4",
     "mocha": "^3.1.2",
     "nodemon": "^1.11.0",
