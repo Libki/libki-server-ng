@@ -41,16 +41,15 @@ module.exports = {
                 res.json(client)
             })
             .catch(error => {
-                console.log(error);
-                res.send('An error occured');
+                console.log("ERROR: " + err);
+                res.status(500).send(err);
             });
     },
 
     settings: (req, res) => {
         let site = req.body.site;
 
-        // 'site' is required
-        if (typeof site === 'undefined') {
+        if (!site) {
             res.status(400).send("No param 'site' passed in!");
             return;
         }
