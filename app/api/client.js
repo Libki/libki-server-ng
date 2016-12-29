@@ -151,8 +151,7 @@ module.exports = {
         }
 
         // Validate password
-        let md5 = CryptoJS.MD5(password).toString();
-        if (md5 != user.attributes.password) {
+        if ( ! user.verifyPassword( password ) ) {
             res.status(401).send('Parameter "password" invalid!');
             return;
         }
