@@ -94,7 +94,6 @@ module.exports = {
     },
 
     login: async (req, res) => {
-        //TODO: on login, verify username and password, create statistic line
         let data = req.body;
 
         let site = data.site;
