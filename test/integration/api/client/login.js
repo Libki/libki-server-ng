@@ -60,7 +60,7 @@ describe('loading express', function() {
                 .expect(401, 'Parameter "password" invalid!', done);
         });
 
-        it('respond with 400 if invalid username is passed', function(done) {
+        it('respond with 401 if invalid username is passed', function(done) {
             request(server)
                 .post('/api/client/login')
                 .send({
@@ -72,7 +72,7 @@ describe('loading express', function() {
                 .expect(401, 'Parameter "username" invalid!', done);
         });
 
-        it('respond with 400 if invalid client name is passed', function(done) {
+        it('respond with 401 if invalid client name is passed', function(done) {
             request(server)
                 .post('/api/client/login')
                 .send({
