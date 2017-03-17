@@ -21,29 +21,57 @@ let CLIENT_SETTINGS = [
 ];
 
 module.exports = {
-    register: (req, res) => {
+    register: async(req, res) => {
 
-        let client = req.body;
+        const site = req.body.site || req.query.site;
+        const name = req.body.name || req.query.name;
+        const location = req.body.location || req.query.location;
 
-        if (!client.site) {
+        if (!site) {
             res.status(400).send('Parameter "site" not sent!');
             return;
         }
 
-        if (!client.name) {
+        if (!name) {
             res.status(400).send('Parameter "name" not sent!');
             return;
         }
 
-        new Client(client)
-            .save()
-            .then(client => {
-                res.json(client)
-            })
-            .catch(error => {
-                console.log("ERROR: " + err);
-                res.status(500).send(err);
-            });
+        let client;
+        try {
+            client = await Client
+                .where('name', name)
+                .where('site', site)
+                .fetch({
+                    require: false
+                });
+        } catch (error) {
+            console.log(error);
+        }
+
+        if (client) {
+            try {
+                await client.save();
+                res.json(client);
+            } catch (error) {
+                console.log("ERROR: " + error);
+                res.status(500).send(error);
+            }
+        } else {
+            new Client({
+                    site: site,
+                    name: name,
+                    location: location,
+                })
+                .save()
+                .then(client => {
+                    res.json(client)
+                })
+                .catch(error => {
+                    console.log("ERROR: " + error);
+                    res.status(500).send(error);
+                });
+        }
     },
 
     settings: (req, res) => {
@@ -93,7 +121,7 @@ module.exports = {
         //including messages, minutes, and status
     },
 
-    login: async (req, res) => {
+    login: async(req, res) => {
         let data = req.body;
 
         let site = data.site;
@@ -150,7 +178,7 @@ module.exports = {
         }
 
         // Validate password
-        if ( ! user.verifyPassword( password ) ) {
+        if (!user.verifyPassword(password)) {
             res.status(401).send('Parameter "password" invalid!');
             return;
         }

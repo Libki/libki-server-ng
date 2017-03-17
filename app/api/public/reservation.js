@@ -33,7 +33,7 @@ module.exports = {
         }
 
         // Get client
-        let client = null;
+        let client;
         try {
             client = await Client
                 .where('id', client_id)

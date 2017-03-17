@@ -27,7 +27,10 @@ router.post('/public/reservation', publicReservationAPI.create);
 router.delete('/public/reservation/:id', publicReservationAPI.delete);
 
 router.get('/client/settings', clientAPI.settings);
+
+router.get('/client/register', clientAPI.register);
 router.post('/client/register', clientAPI.register);
+
 router.post('/client/login', clientAPI.login);
 router.post('/client/logout', clientAPI.logout);
 router.post('/client/acknowledge_reservation', clientAPI.acknowledge_reservation);

@@ -26,7 +26,7 @@ exports.up = function(knex, Promise) {
 
             table.timestamps();
 
-            table.unique(['site', 'name']);
+            table.unique(['site', 'name', 'location']);
         }),
 
         knex.schema.createTable('sessions', function(table) {
