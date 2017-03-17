@@ -5,7 +5,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
-    "test": "node_modules/.bin/mocha --require babel-polyfill --compilers js:babel-register -u exports test/ --recursive"
+    "test": "node_modules/.bin/mocha -u exports test/ --recursive"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,9 @@
     "bookshelf": "^0.10.2",
     "crypto-js": "^3.1.9-1",
     "express": "~4.0.0",
-    "knex": "^0.12.6"
+    "knex": "^0.12.6",
+    "sqlite": "^2.3.0",
+    "sqlite3": "^3.1.8"
   },
   "devDependencies": {
     "assert": "^1.4.1",
